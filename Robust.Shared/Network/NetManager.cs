@@ -805,6 +805,18 @@ namespace Robust.Shared.Network
             {
                 netConfig.SetMessageTypeEnabled(NetIncomingMessageType.ConnectionApproval, true);
                 netConfig.MaximumConnections = _config.GetEffectiveMaxConnections();
+
+                if (_config.GetCVar(CVars.NetProxyProtocolEnabled))
+                {
+                    netConfig.ProxyProtocolEnabled = true;
+                    netConfig.TrustedProxies =
+                        _config.GetCVar(CVars.NetProxyProtocolTrustedProxies);
+                    netConfig.ProxyProtocolAllowV1 =
+                        _config.GetCVar(CVars.NetProxyProtocolAllowV1);
+
+                    _logger.Info(
+                        $"PROXY protocol enabled; trusted proxies: '{netConfig.TrustedProxies}', allow v1: {netConfig.ProxyProtocolAllowV1}");
+                }
             }
             else
             {
